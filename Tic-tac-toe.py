@@ -18,13 +18,14 @@ class TicTacToe:
 
     self.create_menu()
     self.create_game_board()
+    self.root.mainloop()
 
   def create_menu(self):
     menu_bar = Menu(self.root, bg="white")
     menu_bar.add_command(label="Новая игра", command=self.reset_game)
     self.root.config(menu=menu_bar)
 
-def create_game_board(self):
+  def create_game_board(self):
     self.buttons = []
     board_frames = [Frame(self.root) for _ in range(3)]
    
@@ -65,7 +66,7 @@ def create_game_board(self):
         font=self.button_font
       )
 
- self.check_game_result()
+    self.check_game_result()
     self.switch_player()
 
   def switch_player(self):
@@ -123,8 +124,6 @@ def create_game_board(self):
           command=lambda pos=position: self.make_move(pos),
           font=self.button_font
         )
-        
-    self.root.mainloop()
 
 if __name__ == "__main__":
   game = TicTacToe()
