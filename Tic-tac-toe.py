@@ -65,6 +65,65 @@ def create_game_board(self):
         font=self.button_font
       )
 
+ self.check_game_result()
+    self.switch_player()
+
+  def switch_player(self):
+    self.current_player = 3 - self.current_player  
+
+  def check_game_result(self):
+    winning_lines = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8],  
+      [0, 3, 6], [1, 4, 7], [2, 5, 8],  
+      [0, 4, 8], [2, 4, 6]            
+    ]
+
+    for line in winning_lines:
+      first, second, third = line
+      if (self.game_board[first] == self.game_board[second] ==
+        self.game_board[third] != 0):
+        self.end_game(self.game_board[first])
+        return
+
+    if self.move_count == 9:
+      self.end_game(0)
+
+  def end_game(self, winner):
+    self.game_over = True
+    if winner == 1:
+      message = "Крестики победили!"
+    elif winner == 2:
+      message = "Нолики победили!"
+    else:
+      message = "У вас ничья!"
+   
+    mb.showinfo(title="Конец игры!", message=message)
+    self.disable_all_buttons()
+
+  def disable_all_buttons(self):
+    for button in self.buttons:
+      button.configure(state=DISABLED)
+
+  def reset_game(self):
+    confirm = mb.askyesno(
+      title="Новая игра",
+      message="Вы действительно хотите начать заново?"
+    )
+   
+    if confirm:
+      self.game_board = [0] * 9
+      self.current_player = 1
+      self.move_count = 0
+      self.game_over = False
+     
+      for position, button in enumerate(self.buttons):
+        button.configure(
+          state=NORMAL,
+          text="",
+          command=lambda pos=position: self.make_move(pos),
+          font=self.button_font
+        )
+        
     self.root.mainloop()
 
 if __name__ == "__main__":
